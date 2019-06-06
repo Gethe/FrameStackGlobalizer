@@ -3,6 +3,7 @@
 ## Notes: Re-adds global names to the frame stack tooltip
 ## Author: Gethe
 ## Version: 1.0
+## LoadOnDemand: 1
 ## LoadWith: Blizzard_DebugTools
 
 FrameStackGlobalizer.lua
