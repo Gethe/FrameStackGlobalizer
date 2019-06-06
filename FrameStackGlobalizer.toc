@@ -1,0 +1,8 @@
+## Interface: 80200
+## Title: FrameStackGlobalizer
+## Notes: Re-adds global names to the frame stack tooltip
+## Author: Gethe
+## Version: 1.0
+## LoadWith: Blizzard_DebugTools
+
+FrameStackGlobalizer.lua
