@@ -2,6 +2,7 @@ local frames = {}
 local EnumerateFrames = _G.EnumerateFrames
 local tostring = _G.tostring
 local function FindFrame(hash)
+    --print("FindFrame", frames[hash], hash)
     if frames[hash] then
         return frames[hash]
     else
@@ -18,8 +19,8 @@ local function FindFrame(hash)
     end
 end
 
+local next = _G.next
 _G.hooksecurefunc(_G.FrameStackTooltip, "SetFrameStack", function(self, showHidden, showRegions, highlightIndexChanged)
-    --print("SetFrameStack", showHidden, showRegions, highlightIndexChanged)
     local regions = {self:GetRegions()}
     for _, region in next, regions do
         if region:GetObjectType() == "FontString" then
@@ -28,13 +29,11 @@ _G.hooksecurefunc(_G.FrameStackTooltip, "SetFrameStack", function(self, showHidd
                 local hash = text:match("UIParent%.(%x*)%.?")
                 if hash then
                     local frame = FindFrame(hash:upper())
-                    print("frame", frame, hash)
-                    if frame and hash then
-                        local name = frame:GetName()
+                    --print("frame", frame, hash)
+                    if frame then
+                        local name = frame:GetName() or frame:GetDebugName()
                         region:SetText(text:gsub("(UIParent%.%x*)", name))
                     end
-                else
-                    print("text", text)
                 end
             end
         end
