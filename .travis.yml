@@ -1,23 +1,14 @@
 sudo: false
+language: c
 
-matrix:
-  include:
-    - language: c
-      addons:
-        apt:
-          packages:
-            - luarocks
-            - pandoc
-      install: luarocks install --local luacheck
-      before_script: $HOME/.luarocks/bin/luacheck . -q
-      script:
-        - curl -s https://raw.githubusercontent.com/BigWigsMods/packager/master/release.sh -o release.sh
-        - bash release.sh
-      after_script:
+addons:
+  apt:
+    packages:
+      - luarocks
+      - pandoc
 
-    - language: python
-      python: 3.6
-      before_script:
-        - curl -s https://raw.githubusercontent.com/Gethe/lua-doc-parser/master/parse.py -o parse.py
-      script:
-        - bash build.sh
+install: luarocks install --local luacheck
+before_script: $HOME/.luarocks/bin/luacheck . -q
+script:
+  - curl -s https://raw.githubusercontent.com/BigWigsMods/packager/master/release.sh -o release.sh
+  - bash release.sh -L -p 88269 -w 16068
