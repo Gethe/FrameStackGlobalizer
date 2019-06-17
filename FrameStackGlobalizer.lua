@@ -1,25 +1,24 @@
-local frames = {}
 local EnumerateFrames = _G.EnumerateFrames
 local tostring = _G.tostring
+
+local frames = {}
 local function FindFrame(hash)
-    --print("FindFrame", frames[hash], hash)
     if frames[hash] then
         return frames[hash]
     else
         local frame = EnumerateFrames()
         while frame do
-            if frame:IsVisible() and frame:IsMouseOver() then
-                if tostring(frame):find(hash) then
-                    frames[hash] = frame
-                    return frame
-                end
+            local frameHash = tostring(frame)
+            if frameHash:find(hash) then
+                frames[hash] = frame
+                return frame
             end
             frame = EnumerateFrames(frame)
         end
     end
 end
 
-_G.hooksecurefunc(_G.FrameStackTooltip, "SetFrameStack", function(self, showHidden)
+_G.hooksecurefunc(_G.FrameStackTooltip, "SetFrameStack", function(self)
     for i = 1, self:NumLines() do
         local line = _G["FrameStackTooltipTextLeft"..i]
         local text = line:GetText()
