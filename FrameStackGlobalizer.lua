@@ -19,21 +19,18 @@ local function FindFrame(hash)
     end
 end
 
-local next = _G.next
-_G.hooksecurefunc(_G.FrameStackTooltip, "SetFrameStack", function(self, showHidden, showRegions, highlightIndexChanged)
-    local regions = {self:GetRegions()}
-    for _, region in next, regions do
-        if region:GetObjectType() == "FontString" then
-            local text = region:GetText()
-            if text and text:find("<%d+>") then
-                local hash = text:match("UIParent%.(%x*)%.?")
-                if hash then
-                    local frame = FindFrame(hash:upper())
-                    --print("frame", frame, hash)
-                    if frame then
-                        local name = frame:GetName() or frame:GetDebugName()
-                        region:SetText(text:gsub("(UIParent%.%x*)", name))
-                    end
+_G.hooksecurefunc(_G.FrameStackTooltip, "SetFrameStack", function(self, showHidden)
+    for i = 1, self:NumLines() do
+        local line = _G["FrameStackTooltipTextLeft"..i]
+        local text = line:GetText()
+        if text and text:find("<%d+>") then
+            local hash = text:match("UIParent%.(%x*)%.?")
+            if hash then
+                local frame = FindFrame(hash:upper())
+                --print("frame", frame, hash)
+                if frame then
+                    local name = frame:GetName() or frame:GetDebugName()
+                    line:SetText(text:gsub("(UIParent%.%x*)", name))
                 end
             end
         end
