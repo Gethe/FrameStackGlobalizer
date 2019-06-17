@@ -5,5 +5,8 @@
 ## Version: 1.0
 ## LoadOnDemand: 1
 ## LoadWith: Blizzard_DebugTools
+## X-Website: http://www.wowinterface.com/downloads/info25023.html
+## X-Curse-Project-ID: 324457
+## X-WoWI-ID: 25023
 
 FrameStackGlobalizer.lua
