@@ -18,18 +18,28 @@ local function FindFrame(hash)
     end
 end
 
+local matchPattern, subPattern = "%s%%.(%%x*)%%.?", "(%s%%.%%x*)"
+local function GetHash(text)
+    local parent = text:match(">%s+(%w+)%.")
+    if parent then
+        local hash = text:match(matchPattern:format(parent))
+        if hash then
+            return hash, subPattern:format(parent)
+        end
+    end
+end
+
 _G.hooksecurefunc(_G.FrameStackTooltip, "SetFrameStack", function(self)
     for i = 1, self:NumLines() do
         local line = _G["FrameStackTooltipTextLeft"..i]
         local text = line:GetText()
         if text and text:find("<%d+>") then
-            local hash = text:match("UIParent%.(%x*)%.?")
+            local hash, pattern = GetHash(text)
             if hash then
                 local frame = FindFrame(hash:upper())
                 --print("frame", frame, hash)
                 if frame then
-                    local name = frame:GetName() or frame:GetDebugName()
-                    line:SetText(text:gsub("(UIParent%.%x*)", name))
+                    line:SetText(text:gsub(pattern, frame:GetName() or frame:GetDebugName()))
                 end
             end
         end
