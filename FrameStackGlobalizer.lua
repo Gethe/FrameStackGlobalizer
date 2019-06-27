@@ -19,18 +19,25 @@ local function FindFrame(hash)
             frame = EnumerateFrames(frame)
         end
     end
+
     ignore[hash] = true
 end
 
 local matchPattern, subPattern = "%s%%.(%%x*)%%.?", "(%s%%.%%x*)"
-local function GetHash(text)
-    local parent = text:match(">%s+(%w+)%.")
+local function TransformText(text)
+    local parent = text:match("%s+([%w_]+)%.")
     if parent then
         local hash = text:match(matchPattern:format(parent))
-        if hash then
-            return hash, subPattern:format(parent)
+        if hash and hash ~= "" then
+            local frame = FindFrame(hash:upper())
+            if frame and frame:GetName() then
+                text = text:gsub(subPattern:format(parent), frame:GetName())
+                return TransformText(text)
+            end
         end
     end
+
+    return text
 end
 
 _G.hooksecurefunc(_G.FrameStackTooltip, "SetFrameStack", function(self)
@@ -38,14 +45,7 @@ _G.hooksecurefunc(_G.FrameStackTooltip, "SetFrameStack", function(self)
         local line = _G["FrameStackTooltipTextLeft"..i]
         local text = line:GetText()
         if text and text:find("<%d+>") then
-            local hash, pattern = GetHash(text)
-            if hash then
-                local frame = FindFrame(hash:upper())
-                --print("frame", frame, hash)
-                if frame then
-                    line:SetText(text:gsub(pattern, frame:GetName() or frame:GetDebugName()))
-                end
-            end
+            line:SetText(TransformText(text))
         end
     end
 end)
