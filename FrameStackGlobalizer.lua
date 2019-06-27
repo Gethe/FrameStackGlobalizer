@@ -28,7 +28,7 @@ local function TransformText(text)
     local parent = text:match("%s+([%w_]+)%.")
     if parent then
         local hash = text:match(matchPattern:format(parent))
-        if hash and hash ~= "" then
+        if hash and #hash > 5 then
             local frame = FindFrame(hash:upper())
             if frame and frame:GetName() then
                 text = text:gsub(subPattern:format(parent), frame:GetName())
