@@ -2,7 +2,7 @@
 ## Title: FrameStackGlobalizer
 ## Notes: Re-adds global names to the frame stack tooltip
 ## Author: Gethe
-## Version: 1.1
+## Version: 1.2
 ## LoadOnDemand: 1
 ## LoadWith: Blizzard_DebugTools
 ## X-Website: http://www.wowinterface.com/downloads/info25023.html
