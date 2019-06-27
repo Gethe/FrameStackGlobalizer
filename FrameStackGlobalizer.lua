@@ -1,8 +1,11 @@
 local EnumerateFrames = _G.EnumerateFrames
 local tostring = _G.tostring
 
+local ignore = {}
 local frames = {}
 local function FindFrame(hash)
+    if ignore[hash] then return end
+
     if frames[hash] then
         return frames[hash]
     else
@@ -16,6 +19,7 @@ local function FindFrame(hash)
             frame = EnumerateFrames(frame)
         end
     end
+    ignore[hash] = true
 end
 
 local matchPattern, subPattern = "%s%%.(%%x*)%%.?", "(%s%%.%%x*)"
